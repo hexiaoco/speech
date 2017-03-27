@@ -1,0 +1,66 @@
+
+function load_jQuery(){
+	if(window.jQuery){
+		return;
+	}
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
+	script.src = '//cdn.bootcss.com/jquery/3.2.1/jquery.js';
+	document.head.appendChild(script);
+}
+
+
+function get_token(){
+	var url = 'https://openapi.baidu.com/oauth/2.0/token';
+	var data = {
+		grant_type: 'client_credentials', 
+		client_id: 'GfR3VcXrQiVDNs4b89i0htdi',
+		client_secret: '5898ee86ff302904a60fa58e6ef26be8'
+	}
+
+//	location.href = 'https://openapi.baidu.com/oauth/2.0/token'
+
+	load_jQuery();
+	callback();
+	
+	function callback(){
+		args = arguments;
+		setTimeout(function(){		
+			if(window.jQuery){
+				$.post(url, data, function(data){
+					console.log('access_token: ' + data.access_token);
+					window.token = data.access_token;	
+				});
+			} else {
+				console.log(args.callee.name);
+				args.callee();
+			}
+		}, 200);
+	}
+
+}
+
+
+function tell(text='你好', token='24.46262ec1ac54ae8f40256c8863484b58.2592000.1493219761.282335-9448974'){
+	location.href = 'http://tsn.baidu.com/text2audio?lan=zh&cuid=test&ctp=1&tok=' + token + '&tex=' + text;
+}
+
+
+function text_to_audio(text){
+	load_jQuery();
+	var url = 'http://tsn.baidu.com/text2audio';
+  	var token = '24.5b69e34417c7b25a1583d26b37d15165.2592000.1493205313.282335-9448974';
+  	var data = {
+    	tex: text,
+    	lan: 'zh',
+    	tok: token,
+    	ctp: 1,
+    	'cuid': 'mac'
+ 	}
+  	console.log(22);
+  	$.post(url, data, function(data){
+    	alert(data);
+  	});
+}
+
+text_to_audio('你好');

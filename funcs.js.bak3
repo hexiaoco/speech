@@ -1,0 +1,53 @@
+function load_jQuery(){
+	if(window.jQuery){
+		return;
+	}
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
+	script.src = '//cdn.bootcss.com/jquery/3.2.1/jquery.js';
+	document.head.appendChild(script);
+}
+
+
+function get_token(){
+	var token = '';
+	var url = 'https://openapi.baidu.com/oauth/2.0/token';
+	var data = {
+		grant_type: 'client_credentials', 
+		client_id: 'GfR3VcXrQiVDNs4b89i0htdi',
+		client_secret: '5898ee86ff302904a60fa58e6ef26be8'
+	}
+
+	load_jQuery();
+	token = callback();
+	return token;
+	
+	function callback(){
+		var token = '';
+		var args = arguments;
+		var loading = false,
+			loaded = false;;
+		
+		(function(){
+			if(window.jQuery && !loading){
+				$.post(url, data, function(data){
+					loading = true;
+					console.log('access_token: ' + data.access_token);
+					token = data.access_token;
+					loaded = true;
+					loading = false;
+				});
+			} else {
+				console.log((new Date()).toTimeString());
+				sleep(1000);
+				arguments.callee();
+			}
+		})()
+		
+		return token;
+	}
+}
+
+function sleep(msec) {
+	for(var start=Date.now(); Date.now()-start<=msec;){} 
+}
