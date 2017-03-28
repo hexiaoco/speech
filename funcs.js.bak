@@ -1,12 +1,14 @@
 
-function load_jQuery(){
+function load_jQuery(fn){
 	if(window.jQuery){
-		return;
+		fn();
+	} else {
+		var script = document.createElement('script');
+		script.type = 'text/javascript';
+		script.src = '//cdn.bootcss.com/jquery/3.2.1/jquery.js';
+		script.onload = fn();
+		document.head.appendChild(script);
 	}
-	var script = document.createElement('script');
-	script.type = 'text/javascript';
-	script.src = '//cdn.bootcss.com/jquery/3.2.1/jquery.js';
-	document.head.appendChild(script);
 }
 
 
